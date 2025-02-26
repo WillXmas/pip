@@ -1,1 +1,32 @@
+import docx
+import openpyxl
 
+# Function to read questions from a Word document
+def read_questions_from_word(doc_path):
+    doc = docx.Document(doc_path)
+    questions = []
+    for para in doc.paragraphs:
+        if para.text.strip():  # Check if the paragraph is not empty
+            questions.append(para.text.strip())
+    return questions
+
+# Function to write questions to an Excel file
+def write_questions_to_excel(questions, excel_path):
+    workbook = openpyxl.Workbook()
+    sheet = workbook.active
+    sheet.title = "Questions"
+    
+    for idx, question in enumerate(questions, start=1):
+        sheet.cell(row=idx, column=1, value=question)
+    
+    workbook.save(excel_path)
+
+# Paths to the Word document and the Excel file
+word_doc_path = 'path/to/your/questions.docx'
+excel_file_path = 'path/to/your/questions.xlsx'
+
+# Read questions from Word and write them to Excel
+questions = read_questions_from_word(word_doc_path)
+write_questions_to_excel(questions, excel_file_path)
+
+print("Questions have been successfully transferred to the Excel file.")
